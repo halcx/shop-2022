@@ -16,4 +16,14 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <!--没有lombok是因为写了provide，所以只在编译期间有效，不会打包到jar中-->
+        <dependency>
+            <artifactId>shop-common</artifactId>
+            <groupId>net.shop</groupId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+
 </project>

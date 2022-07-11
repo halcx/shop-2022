@@ -16,4 +16,20 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <!--每个微服务都会依赖这个common包，所以我们可以把这些都要用的在这里依赖，然后每个微服务引入common即可-->
+    <!--版本号是在聚合工程中统一管理的-->
+    <dependencies>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+    </dependencies>
+
 </project>
