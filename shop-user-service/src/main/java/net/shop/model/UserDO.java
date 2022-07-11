@@ -23,7 +23,7 @@ public class UserDO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -67,6 +67,4 @@ public class UserDO implements Serializable {
      * 盐，用于个人敏感信息处理
      */
     private String secret;
-
-
 }
