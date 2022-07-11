@@ -4,7 +4,9 @@ package net.shop.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import net.shop.model.AddressDO;
 import net.shop.service.AddressService;
+import net.shop.utils.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,8 @@ public class AddressController {
     public Object detail(
             @ApiParam(value = "地址id",required = true)
             @PathVariable("address_id") Long id){
-        return addressService.detail(id);
+        AddressDO detail = addressService.detail(id);
+        return JsonData.buildSuccess(detail);
     }
 
 }
