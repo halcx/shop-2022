@@ -50,7 +50,10 @@ public class NotifyController {
         log.info("图形验证码:{}",kaptchaProduerText);
 
         //存储
-        redisTemplate.opsForValue().set(getKapthcaKey(request),kaptchaProduerText,KAPTCHA_CODE_EXPRIED, TimeUnit.MICROSECONDS);
+        redisTemplate.opsForValue().set(getKapthcaKey(request),kaptchaProduerText,KAPTCHA_CODE_EXPRIED, TimeUnit.MILLISECONDS);
+
+        String s = redisTemplate.opsForValue().get(getKapthcaKey(request));
+        log.info("缓存中的图形验证码是：{}",s);
 
         BufferedImage bufferedImage = kaptchaProduer.createImage(kaptchaProduerText);
         ServletOutputStream outputStream = null;
@@ -69,6 +72,7 @@ public class NotifyController {
 
 
     /**
+     *
      * 1、匹配图形验证码是否正常
      * 2、发送验证码
      * @param to
@@ -81,13 +85,13 @@ public class NotifyController {
                               @RequestParam(value = "kaptcha",required = true) String kaptcha,
                               HttpServletRequest request){
         String kapthcaKey = getKapthcaKey(request);
+        log.info("key:{}",kapthcaKey);
         String cacheKey = redisTemplate.opsForValue().get(kapthcaKey);
-        log.info(cacheKey);
         if (cacheKey != null&&kaptcha!=null&&cacheKey.equalsIgnoreCase(kaptcha)) {
             //成功
             //验证码要失效掉
-            redisTemplate.delete(cacheKey);
             JsonData jsonData = notifyService.sendCode(SendCodeEnum.USER_REGISTER, to);
+            redisTemplate.delete(cacheKey);
             return jsonData;
 
         }else {
