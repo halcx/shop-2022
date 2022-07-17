@@ -103,6 +103,7 @@ public class NotifyServiceImpl implements NotifyService {
         String cacheValue = redisTemplate.opsForValue().get(cacheKey);
         if(StringUtils.isNotBlank(cacheValue)){
             String cacheCode = cacheValue.split("_")[0];
+            code = String.format(CONTENT,code);
             if(cacheCode.equals(code)){
                 redisTemplate.delete(cacheKey);
                 return true;

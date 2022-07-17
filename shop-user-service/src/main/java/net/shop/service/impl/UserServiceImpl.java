@@ -8,12 +8,15 @@ import net.shop.model.UserDO;
 import net.shop.request.UserRegisterRequest;
 import net.shop.service.NotifyService;
 import net.shop.service.UserService;
+import net.shop.utils.CommonUtils;
 import net.shop.utils.JsonData;
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Service
@@ -52,6 +55,12 @@ public class UserServiceImpl implements UserService {
         userDO.setCreateTime(new Date());
         userDO.setSlogan("test slogan");
         //设置密码 加密 TODO
+        //生成密钥，也就是盐
+        userDO.setSecret("$1$"+ CommonUtils.getStringNumRandom(8));
+
+        //密码+盐处理
+        String cryptPwd  = Md5Crypt.md5Crypt(registerRequest.getPwd().getBytes(StandardCharsets.UTF_8),userDO.getSecret());
+        userDO.setPwd(cryptPwd);
 
         //账号唯一性检查 TODO
         if(checkUnique(userDO.getMail())){
@@ -71,7 +80,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     private boolean checkUnique(String mail) {
-        return false;
+        return true;
     }
 
     /**
