@@ -17,6 +17,11 @@ public enum BizCodeEnum {
     OPS_REPEAT(110001,"重复操作"),
 
     /**
+     * 文件相关
+     */
+    FILE_UPLOAD_USER_IMG_FAIL(600101,"用户头像文件上传失败"),
+
+    /**
      *验证码
      */
     CODE_TO_ERROR(240001,"接收号码不合规"),
