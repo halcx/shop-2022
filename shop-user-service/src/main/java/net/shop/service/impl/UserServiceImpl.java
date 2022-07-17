@@ -1,5 +1,6 @@
 package net.shop.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import net.shop.enums.BizCodeEnum;
 import net.shop.enums.SendCodeEnum;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -54,7 +56,7 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(registerRequest,userDO);
         userDO.setCreateTime(new Date());
         userDO.setSlogan("test slogan");
-        //设置密码 加密 TODO
+        //设置密码 加密
         //生成密钥，也就是盐
         userDO.setSecret("$1$"+ CommonUtils.getStringNumRandom(8));
 
@@ -80,7 +82,11 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     private boolean checkUnique(String mail) {
-        return true;
+        QueryWrapper<UserDO> queryWrapper = new QueryWrapper<UserDO>().eq("mail", mail);
+        List<UserDO> userDOS = userMapper.selectList(queryWrapper);
+
+        return userDOS.size()>0?false:true;
+
     }
 
     /**
