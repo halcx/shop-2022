@@ -11,12 +11,10 @@ import net.shop.request.UserRegisterRequest;
 import net.shop.service.FileService;
 import net.shop.service.UserService;
 import net.shop.utils.JsonData;
+import net.shop.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -73,5 +71,11 @@ public class UserController {
         return jsonData;
     }
 
+    @ApiOperation("个人信息查询")
+    @GetMapping("/detail")
+    public JsonData detail(){
+        UserVO userVO = userService.findUserDetail();
+        return JsonData.buildSuccess(userVO);
+    }
 }
 

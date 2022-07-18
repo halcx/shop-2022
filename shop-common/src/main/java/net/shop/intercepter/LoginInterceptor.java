@@ -1,4 +1,4 @@
-package net.shop.interceptor;
+package net.shop.intercepter;
 
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
@@ -49,11 +49,13 @@ public class LoginInterceptor implements HandlerInterceptor {
             String name = (String)claims.get("name");
             String mail = (String)claims.get("mail");
 
-            LoginUser loginUser = new LoginUser();
-            loginUser.setId(userId);
-            loginUser.setMail(mail);
-            loginUser.setHeadImg(headImg);
-            loginUser.setName(name);
+            LoginUser loginUser = LoginUser
+                    .builder()
+                    .headImg(headImg)
+                    .name(name)
+                    .id(userId)
+                    .mail(mail)
+                    .build();
 
             threadLocal.set(loginUser);
             return true;

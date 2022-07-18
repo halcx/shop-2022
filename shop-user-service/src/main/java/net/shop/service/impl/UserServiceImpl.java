@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import net.shop.enums.BizCodeEnum;
 import net.shop.enums.SendCodeEnum;
+import net.shop.intercepter.LoginInterceptor;
 import net.shop.mapper.UserMapper;
 import net.shop.model.LoginUser;
 import net.shop.model.UserDO;
@@ -14,6 +15,7 @@ import net.shop.service.UserService;
 import net.shop.utils.CommonUtils;
 import net.shop.utils.JWTUtil;
 import net.shop.utils.JsonData;
+import net.shop.vo.UserVO;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -94,7 +96,7 @@ public class UserServiceImpl implements UserService {
             String cryptPwd = Md5Crypt.md5Crypt(loginRequest.getPwd().getBytes(), userDO.getSecret());
             if(cryptPwd.equals(userDO.getPwd())){
                 //登陆成功，生成token TODO
-                LoginUser loginUser = new LoginUser();
+                LoginUser loginUser = LoginUser.builder().build();
                 BeanUtils.copyProperties(userDO,loginUser);
                 String token = JWTUtil.generateJsonWebToken(loginUser);
                 return JsonData.buildSuccess(token);
@@ -106,6 +108,19 @@ public class UserServiceImpl implements UserService {
             //未注册
             return JsonData.buildResult(BizCodeEnum.ACCOUNT_UNREGISTER);
         }
+    }
+
+    /**
+     * 通过threadLocal查看用户详情
+     * @return
+     */
+    @Override
+    public UserVO findUserDetail() {
+        LoginUser loginUser = LoginInterceptor.threadLocal.get();
+        UserDO userDO = userMapper.selectOne(new QueryWrapper<UserDO>().eq("id", loginUser.getId()));
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(userDO,userVO);
+        return userVO;
     }
 
     /**
