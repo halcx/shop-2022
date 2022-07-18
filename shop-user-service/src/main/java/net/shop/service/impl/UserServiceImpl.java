@@ -5,11 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import net.shop.enums.BizCodeEnum;
 import net.shop.enums.SendCodeEnum;
 import net.shop.mapper.UserMapper;
+import net.shop.model.LoginUser;
 import net.shop.model.UserDO;
+import net.shop.request.UserLoginRequest;
 import net.shop.request.UserRegisterRequest;
 import net.shop.service.NotifyService;
 import net.shop.service.UserService;
 import net.shop.utils.CommonUtils;
+import net.shop.utils.JWTUtil;
 import net.shop.utils.JsonData;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.apache.commons.lang3.StringUtils;
@@ -73,6 +76,35 @@ public class UserServiceImpl implements UserService {
         }
         else {
             return JsonData.buildResult(BizCodeEnum.ACCOUNT_REPEAT);
+        }
+    }
+
+    /**
+     * 1、根据mail去找有没有这记录
+     * 2、有的话用密钥+用户传递的明文密码，进行加密，再和数据库的密文进行匹配
+     * @param loginRequest
+     * @return
+     */
+    @Override
+    public JsonData login(UserLoginRequest loginRequest) {
+        List<UserDO> userDOList = userMapper.selectList(new QueryWrapper<UserDO>().eq("mail", loginRequest.getMail()));
+        if(userDOList!=null&&userDOList.size()==1){
+            //已经注册
+            UserDO userDO = userDOList.get(0);
+            String cryptPwd = Md5Crypt.md5Crypt(loginRequest.getPwd().getBytes(), userDO.getSecret());
+            if(cryptPwd.equals(userDO.getPwd())){
+                //登陆成功，生成token TODO
+                LoginUser loginUser = new LoginUser();
+                BeanUtils.copyProperties(userDO,loginUser);
+                String token = JWTUtil.generateJsonWebToken(loginUser);
+                return JsonData.buildSuccess(token);
+            }else {
+                //登陆失败
+                return JsonData.buildResult(BizCodeEnum.ACCOUNT_PWD_ERROR);
+            }
+        }else {
+            //未注册
+            return JsonData.buildResult(BizCodeEnum.ACCOUNT_UNREGISTER);
         }
     }
 
