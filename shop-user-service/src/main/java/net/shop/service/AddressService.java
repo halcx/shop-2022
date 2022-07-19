@@ -4,6 +4,8 @@ import net.shop.model.AddressDO;
 import net.shop.request.AddressRequest;
 import net.shop.vo.AddressVO;
 
+import java.util.List;
+
 public interface AddressService {
     AddressVO detail(Long id);
 
@@ -20,4 +22,10 @@ public interface AddressService {
      * @return
      */
     int delete(int addressId);
+
+    /**
+     * 查找用户全部收货地址
+     * @return
+     */
+    List<AddressVO> listUserAllAddress();
 }

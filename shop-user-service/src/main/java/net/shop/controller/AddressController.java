@@ -12,6 +12,9 @@ import net.shop.utils.JsonData;
 import net.shop.vo.AddressVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.spring.web.json.Json;
+
+import java.util.List;
 
 /**
  * <p>
@@ -53,6 +56,13 @@ public class AddressController {
         int rows = addressService.delete(addressId);
 
         return rows == 1 ? JsonData.buildSuccess():JsonData.buildResult(BizCodeEnum.ADDRESS_DEL_FAIL);
+    }
+
+    @ApiOperation("查询用户全部收货地址")
+    @GetMapping("/list")
+    public JsonData findUserAllAddress(){
+        List<AddressVO> list = addressService.listUserAllAddress();
+        return JsonData.buildSuccess(list);
     }
 
 }
