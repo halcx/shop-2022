@@ -13,8 +13,8 @@ spring:
     password: 12345678
 
   redis:
-    host: 47.97.83.36
-    password: 123456
+    host: 
+    password: 
     port: 8000
 
 #配置plus打印sql日志
