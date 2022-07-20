@@ -9,6 +9,7 @@ import net.shop.enums.CouponPublishEnum;
 import net.shop.mapper.CouponMapper;
 import net.shop.model.CouponDO;
 import net.shop.service.CouponService;
+import net.shop.utils.JsonData;
 import net.shop.vo.CouponVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,17 @@ public class CouponServiceImpl implements CouponService {
         pageMap.put("current_data", couponDOPage.getRecords().stream().map(obj -> beanProcess(obj)).collect(Collectors.toList()));
 
         return pageMap;
+    }
+
+    /**
+     * 领取优惠券接口
+     * @param couponId
+     * @param category
+     * @return
+     */
+    @Override
+    public JsonData addCoupon(String couponId, CouponCategoryEnum category) {
+        return JsonData.buildSuccess();
     }
 
     /**
