@@ -13,15 +13,15 @@ spring:
     password: 12345678
 
   redis:
-    host: 47.97.83.36
-    password: 123456
+    host: 
+    password: 
     port: 8000
 
   #邮箱服务配置
   mail:
     host: smtp.126.com #发送邮件服务器
     username: wangxiaohan_tech@126.com #发送邮件的邮箱地址
-    password: YVEMSPNNPGROYRSR #客户端授权码，不是邮箱密码,网易的是自己设置的
+    password:  #客户端授权码，不是邮箱密码,网易的是自己设置的
     from: wangxiaohan_tech@126.com # 发送邮件的地址，和上面username一致
 
     properties.mail.smtp.starttls.enable: true
@@ -44,6 +44,6 @@ logging:
 aliyun:
   oss:
     endpoint: oss-cn-hangzhou.aliyuncs.com
-    access-key-id: LTAI5t9ESygx1kjqzZcZQGCJ
-    access-key-secret: SBL0OX7eOuj6gxPEGne5ppxGImIX6I
+    access-key-id: 
+    access-key-secret: 
     bucketname: shop-user-service-2022-img
